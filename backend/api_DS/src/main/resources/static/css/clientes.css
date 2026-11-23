@@ -20,8 +20,8 @@ body {
 
 .navegacao {
     display: flex;
-    gap: 16px;
-    margin-top: 20px;
+    align-items: center;
+    gap: 50px;
 }
 
 .cabecalho,
@@ -77,7 +77,7 @@ body {
 }
 
 .secundario {
-    background: #edf1f7;
+    background: #deedff !important;
     color: #172033;
 }
 
@@ -144,11 +144,6 @@ td {
     text-align: center;
 }
 
-.nota {
-    margin-top: 18px;
-    color: #52617a;
-}
-
 .painel-form {
     padding: 24px;
 }
@@ -171,8 +166,6 @@ td {
     border: 1px solid #ccd5e3;
     border-radius: 8px;
     padding: 11px;
-    background: white;
-    color: inherit;
 }
 
 .botoes {

@@ -20,8 +20,8 @@
     </header>
 
     <nav class="navegacao" aria-label="Cadastros">
-        <a class="link" th:href="@{/clientes}" href="/clientes">Clientes</a>
-        <a class="link" th:href="@{/profissionais}" href="/profissionais">Profissionais</a>
+        <a class="link botao secundario" th:href="@{/clientes}" href="/clientes">Clientes</a>
+        <a class="link botao secundario" th:href="@{/profissionais}" href="/profissionais">Profissionais</a>
     </nav>
 
     <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
@@ -49,20 +49,20 @@
                 </thead>
                 <tbody>
                 <tr th:each="agendamento : ${agendamentos}">
-                    <td th:text="${agendamento.agendamentoId}">1</td>
-                    <td class="destaque"
-                        th:text="${clienteNomes[agendamento.clienteId] ?: 'Cliente não encontrado'}">Cliente</td>
+                    <td th:text="${agendamento.agendamentoId}">
+                        1
+                    </td>
+                    <td class="destaque" th:text="${clienteNomes[agendamento.clienteId] ?: 'Cliente não encontrado'}">
+                        Cliente
+                    </td>
                     <td th:text="${profissionalNomes[agendamento.profissionalId] ?: 'Profissional não encontrado'}">
                         Profissional
                     </td>
                     <td th:text="${#temporals.format(agendamento.agendamentoData, 'dd/MM/yyyy')}">01/01/2026</td>
                     <td th:text="${#temporals.format(agendamento.agendamentoHorario, 'HH:mm')}">09:00</td>
                     <td class="acoes">
-                        <a class="link"
-                           th:href="@{/agendamentos/editar/{id}(id=${agendamento.agendamentoId})}">Editar</a>
-                        <form method="post"
-                              th:action="@{/agendamentos/excluir/{id}(id=${agendamento.agendamentoId})}"
-                              onsubmit="return confirm('Excluir este agendamento?');">
+                        <a class="link" th:href="@{/agendamentos/editar/{id}(id=${agendamento.agendamentoId})}">Editar</a>
+                        <form method="post" th:action="@{/agendamentos/excluir/{id}(id=${agendamento.agendamentoId})}" onsubmit="return confirm('Excluir este agendamento?');">
                             <button class="link perigo" type="submit">Excluir</button>
                         </form>
                     </td>
