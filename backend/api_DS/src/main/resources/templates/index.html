@@ -58,6 +58,8 @@
                     <td th:text="${#temporals.format(agendamento.agendamentoData, 'dd/MM/yyyy')}">01/01/2026</td>
                     <td th:text="${#temporals.format(agendamento.agendamentoHorario, 'HH:mm')}">09:00</td>
                     <td class="acoes">
+                        <a class="link"
+                           th:href="@{/agendamentos/editar/{id}(id=${agendamento.agendamentoId})}">Editar</a>
                         <form method="post"
                               th:action="@{/agendamentos/excluir/{id}(id=${agendamento.agendamentoId})}"
                               onsubmit="return confirm('Excluir este agendamento?');">

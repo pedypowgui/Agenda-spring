@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,8 +58,24 @@ public class AgendamentoPaginaController {
     @GetMapping("/agendamentos/novo")
     public String novo(Model model) {
         model.addAttribute("agendamento", new AgendamentoEntity());
+        model.addAttribute("edicao", false);
         carregarOpcoes(model);
         return "agendamento-form";
+    }
+
+    @GetMapping("/agendamentos/editar/{id}")
+    public String editar(@PathVariable Integer id,
+                         Model model,
+                         RedirectAttributes redirect) {
+        try {
+            model.addAttribute("agendamento", agendamentoService.buscarPorId(id));
+            model.addAttribute("edicao", true);
+            carregarOpcoes(model);
+            return "agendamento-form";
+        } catch (ResponseStatusException ex) {
+            redirect.addFlashAttribute("erro", "Agendamento não encontrado.");
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/agendamentos")
@@ -73,6 +88,7 @@ public class AgendamentoPaginaController {
         }
         if (erro != null) {
             model.addAttribute("erro", erro);
+            model.addAttribute("edicao", false);
             carregarOpcoes(model);
             return "agendamento-form";
         }
@@ -83,6 +99,39 @@ public class AgendamentoPaginaController {
             return "redirect:/";
         } catch (DataAccessException ex) {
             model.addAttribute("erro", "Não foi possível salvar o agendamento. Confira os dados e tente novamente.");
+            model.addAttribute("edicao", false);
+            carregarOpcoes(model);
+            return "agendamento-form";
+        }
+    }
+
+    @PostMapping("/agendamentos/atualizar/{id}")
+    public String atualizar(@PathVariable Integer id,
+                            @ModelAttribute("agendamento") AgendamentoEntity agendamento,
+                            Model model,
+                            RedirectAttributes redirect) {
+        agendamento.setAgendamentoId(id);
+        String erro = validarCampos(agendamento);
+        if (erro == null) {
+            erro = validarReferencias(agendamento);
+        }
+        if (erro != null) {
+            model.addAttribute("erro", erro);
+            model.addAttribute("edicao", true);
+            carregarOpcoes(model);
+            return "agendamento-form";
+        }
+
+        try {
+            agendamentoService.atualizar(id, agendamento);
+            redirect.addFlashAttribute("mensagem", "Agendamento atualizado com sucesso.");
+            return "redirect:/";
+        } catch (ResponseStatusException ex) {
+            redirect.addFlashAttribute("erro", "Agendamento não encontrado.");
+            return "redirect:/";
+        } catch (DataAccessException ex) {
+            model.addAttribute("erro", "Não foi possível atualizar o agendamento. Confira os dados e tente novamente.");
+            model.addAttribute("edicao", true);
             carregarOpcoes(model);
             return "agendamento-form";
         }

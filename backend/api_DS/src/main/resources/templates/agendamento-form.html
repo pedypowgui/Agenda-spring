@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Novo agendamento</title>
+    <title th:text="${edicao} ? 'Editar agendamento' : 'Novo agendamento'">Novo agendamento</title>
     <link rel="stylesheet" th:href="@{/css/clientes.css}" href="/css/clientes.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <header class="cabecalho">
         <div>
             <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
-            <h1>Novo agendamento</h1>
+            <h1 th:text="${edicao} ? 'Editar agendamento' : 'Novo agendamento'">Novo agendamento</h1>
         </div>
         <a class="botao secundario" th:href="@{/}" href="/">Voltar à agenda</a>
     </header>
@@ -19,7 +19,8 @@
     <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
 
     <section class="painel painel-form">
-        <form method="post" th:object="${agendamento}" th:action="@{/agendamentos}">
+        <form method="post" th:object="${agendamento}"
+              th:action="${edicao} ? @{/agendamentos/atualizar/{id}(id=${agendamento.agendamentoId})} : @{/agendamentos}">
             <div class="campos">
                 <label for="clienteId">Cliente*
                     <select id="clienteId" th:field="*{clienteId}" required>
@@ -57,7 +58,9 @@
                 <a class="botao secundario" th:href="@{/}" href="/">Cancelar</a>
                 <button class="botao principal" type="submit"
                         th:disabled="${#lists.isEmpty(clientes) or #lists.isEmpty(profissionais)}">
-                    Salvar agendamento
+                    <span th:text="${edicao} ? 'Atualizar agendamento' : 'Salvar agendamento'">
+                        Salvar agendamento
+                    </span>
                 </button>
             </div>
         </form>
