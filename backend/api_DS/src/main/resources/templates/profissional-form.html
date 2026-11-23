@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Profissionais</title>
+    <link rel="stylesheet" th:href="@{/css/clientes.css}" href="/css/clientes.css">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+            <h1 th:text="${edicao} ? 'Editar profissional' : 'Cadastrar profissional'">
+                Cadastrar profissional
+            </h1>
+        </div>
+        <a class="botao secundario" th:href="@{/profissionais}" href="/profissionais">Voltar</a>
+    </header>
+
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel painel-form">
+        <form method="post" th:object="${profissional}"
+              th:action="${edicao} ? @{/profissionais/atualizar/{id}(id=${profissional.profissionalId})} : @{/profissionais/salvar}">
+            <div class="campos">
+                <label for="nome">Nome completo*
+                    <input id="nome" type="text" th:field="*{profissionalNome}"
+                           required maxlength="150" autocomplete="name">
+                </label>
+
+                <label for="especialidade">Especialidade*
+                    <input id="especialidade" type="text" th:field="*{profissionalEspecialidade}"
+                           required maxlength="150">
+                </label>
+
+                <label for="telefone">Telefone*
+                    <input id="telefone" type="tel" th:field="*{profissionalTelefone}"
+                           required maxlength="30" autocomplete="tel">
+                </label>
+
+                <label for="email">E-mail*
+                    <input id="email" type="email" th:field="*{profissionalEmail}"
+                           required maxlength="200" autocomplete="email">
+                </label>
+            </div>
+
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/profissionais}" href="/profissionais">Cancelar</a>
+                <button class="botao principal" type="submit">Salvar profissional</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>
