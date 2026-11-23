@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Usuários | Thymeleaf</title>
+    <link rel="stylesheet" th:href="@{/css/usuarios.css}" href="/css/usuarios.css">
+</head>
+
+<body>
+    <main class="container">
+        <header class="cabecalho">
+            <div>
+                <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+                <h1>Cadastro de usuários</h1>
+                <p class="subtitulo">Interface Thymeleaf conectada ao Service existente
+                    <code>/consumoapi</code>
+                </p>
+            </div>
+            <a class="botao principal btn-extra" th:href="@{/usuarios/novo}" href="/usuarios/novo">
+                + Novo usuário
+            </a>
+        </header>
+
+        <div class="aviso sucesso" role="status"
+             th:if="${mensagem}" th:text="${mensagem}">
+            Usuário cadastrado.
+        </div>
+
+        <div class="aviso falha" role="alert"
+             th:if="${erro}" th:text="${erro}">
+            Ocorreu um erro.
+        </div>
+
+        <section class="painel">
+            <div class="barra">
+                <div>
+                    <h2>Usuários cadastrados</h2>
+                    <p>
+                        <span th:text="${#lists.size(usuarios)}">0</span>
+                        registro(s)
+                    </p>
+                </div>
+
+                <div class="acoes-barra">
+                    <input id="pesquisaUsuarios" type="search"
+                           aria-label="Pesquisar usuários"
+                           placeholder="Pesquisar por nome, e-mail ou CPF"
+                           autocomplete="off">
+
+                    <button id="atualizarUsuarios" class="botao secundario"
+                            type="button">
+                        Atualizar
+                    </button>
+                </div>
+            </div>
+
+            <div class="tabela-rolagem">
+                <table aria-label="Usuários cadastrados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>CPF</th>
+                            <th>Situação</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="linha-usuario" th:each="u : ${usuarios}">
+                            <td th:text="${u.id}">1</td>
+
+                            <td class="destaque" th:text="${u.nome}">
+                                Usuário de exemplo
+                            </td>
+
+                            <td th:text="${u.email}">
+                                email@exemplo.com
+                            </td>
+
+                            <td th:text="${#strings.isEmpty(u.telefone) ? '—' : u.telefone}">
+                                11999999999
+                            </td>
+
+                            <td th:text="${#strings.isEmpty(u.cpf) ? '—' : u.cpf}">
+                                12345678900
+                            </td>
+
+                            <td>
+                                <span class="situacao"
+                                      th:classappend="${u.ativo == null or !u.ativo} ? 'inativo' : ''"
+                                      th:text="${u.ativo != null and u.ativo} ? 'Ativo' : 'Inativo'">
+                                    Ativo
+                                </span>
+                            </td>
+
+                            <td class="acoes">
+                                <a class="link"
+                                   th:href="@{/usuarios/editar/{id}(id=${u.id})}"
+                                   href="#">
+                                    Editar
+                                </a>
+
+                                <form method="post"
+                                      th:action="@{/usuarios/excluir/{id}(id=${u.id})}"
+                                      onsubmit="return confirm('Excluir este usuário?');">
+                                    <button class="link perigo" type="submit">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p id="mensagemSemRegistros"
+                   class="vazio mensagem-sem-registros"
+                   th:if="${#lists.isEmpty(usuarios)}">
+                    Nenhum usuário encontrado.
+                </p>
+
+                <p id="mensagemFiltroVazio"
+                   class="vazio mensagem-sem-registros" hidden>
+                    Nenhum usuário encontrado.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            O Thymeleaf utiliza o mesmo Service existente. A interface Angular continua disponível em
+            <code>127.0.0.1:4200</code> e a API REST em
+            <code>/consumoapi</code>.
+        </footer>
+    </main>
+
+    <script>
+        // A pesquisa é apenas visual; não altera o Java nem cria endpoints novos.
+        const pesquisa = document.getElementById('pesquisaUsuarios');
+        const linhas = Array.from(document.querySelectorAll('.linha-usuario'));
+        const avisoFiltro = document.getElementById('mensagemFiltroVazio');
+
+        pesquisa.addEventListener('input', function () {
+            const termo = this.value.trim().toLocaleLowerCase('pt-BR');
+            let visiveis = 0;
+
+            linhas.forEach(linha => {
+                const colunas = linha.querySelectorAll('td');
+                const texto = [colunas[1], colunas[2], colunas[4]]
+                    .map(c => c.textContent)
+                    .join(' ')
+                    .toLocaleLowerCase('pt-BR');
+
+                const corresponde = texto.includes(termo);
+                linha.hidden = !corresponde;
+
+                if (corresponde) visiveis++;
+            });
+
+            avisoFiltro.hidden = visiveis !== 0 || linhas.length === 0;
+        });
+
+        document.getElementById('atualizarUsuarios').addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>

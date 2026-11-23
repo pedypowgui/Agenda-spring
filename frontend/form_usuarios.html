@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Usuários | Thymeleaf</title>
+    <link rel="stylesheet" th:href="@{/css/usuarios.css}" href="/css/usuarios.css">
+</head>
+
+<body>
+    <main class="container">
+        <header class="cabecalho">
+            <div>
+                <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+                <h1>Cadastro de usuários</h1>
+                <p class="subtitulo">Interface Thymeleaf conectada ao Service existente
+                    <code>/consumoapi</code>
+                </p>
+            </div>
+
+            <a class="botao principal btn-extra"
+               th:href="@{/usuarios/novo}" href="/usuarios/novo">
+                + Novo usuário
+            </a>
+        </header>
+
+        <div class="aviso falha" role="alert"
+             th:if="${erro}" th:text="${erro}">
+            Verifique os dados.
+        </div>
+
+        <section class="painel painel-form">
+            <div class="barra">
+                <div>
+                    <h2 th:text="${edicao} ? '|Editar usuário #${usuario.id}|' : 'Cadastrar usuário'">
+                        Cadastrar usuário
+                    </h2>
+                    <p>Preencha os campos e clique em Salvar.</p>
+                </div>
+            </div>
+
+            <form method="post" th:object="${usuario}"
+                  th:action="${edicao} ? @{/usuarios/atualizar/{id}(id=${usuario.id})} : @{/usuarios/salvar}">
+
+                <div class="campos">
+                    <label for="nome">Nome completo <span>*</span>
+                        <input id="nome" type="text" th:field="*{nome}"
+                               required maxlength="150" autocomplete="name">
+                    </label>
+
+                    <label for="email">E-mail <span>*</span>
+                        <input id="email" type="email" th:field="*{email}"
+                               required maxlength="200" autocomplete="email">
+                    </label>
+
+                    <label for="senha">Senha <span>*</span>
+                        <input id="senha" type="password" name="senha"
+                               required minlength="4" autocomplete="new-password">
+                    </label>
+
+                    <label for="telefone">Telefone
+                        <input id="telefone" type="tel" th:field="*{telefone}"
+                               maxlength="30" autocomplete="tel">
+                    </label>
+
+                    <label for="cpf">CPF
+                        <input id="cpf" type="text" th:field="*{cpf}"
+                               maxlength="20" autocomplete="off">
+                    </label>
+
+                    <label for="dataNascimento">Data de nascimento
+                        <input id="dataNascimento" type="date"
+                               th:field="*{dataNascimento}">
+                    </label>
+                </div>
+
+                <label class="marcador" for="ativo">
+                    <input id="ativo" type="checkbox" th:field="*{ativo}">
+                    Usuário ativo
+                </label>
+
+                <p class="nota">
+                    Na atualização, informe uma senha: o método PUT dos projetos originais
+                    atualiza também esse campo. Na versão com Lombok, a API não devolve
+                    a senha no JSON.
+                </p>
+
+                <div class="botoes">
+                    <a class="botao secundario"
+                       th:href="@{/usuarios}" href="/usuarios">
+                        Cancelar
+                    </a>
+
+                    <button class="botao principal" type="submit">
+                        Salvar usuário
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <footer>
+            O Thymeleaf utiliza o mesmo Service existente. A interface Angular continua disponível em
+            <code>127.0.0.1:4200</code> e a API REST em
+            <code>/consumoapi</code>.
+        </footer>
+    </main>
+</body>
+
+</html>
