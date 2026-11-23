@@ -1,0 +1,178 @@
+:root {
+    color-scheme: light;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f7fb;
+    color: #172033;
+}
+
+.container {
+    width: min(1100px, calc(100% - 32px));
+    margin: 32px auto;
+}
+
+.cabecalho,
+.barra,
+.botoes,
+.acoes {
+    display: flex;
+    align-items: center;
+}
+
+.cabecalho,
+.barra,
+.botoes {
+    justify-content: space-between;
+}
+
+.eyebrow {
+    color: #52617a;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.painel {
+    margin-top: 24px;
+    overflow: hidden;
+    border: 1px solid #dfe5ef;
+    border-radius: 12px;
+    background: white;
+}
+
+.barra {
+    padding: 20px;
+    border-bottom: 1px solid #dfe5ef;
+}
+
+.barra h2,
+.barra p {
+    margin: 4px 0;
+}
+
+.botao {
+    display: inline-block;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.principal {
+    background: #275df5;
+    color: white;
+}
+
+.secundario {
+    background: #edf1f7;
+    color: #172033;
+}
+
+.aviso {
+    margin-top: 16px;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.sucesso {
+    background: #dff4e5;
+    color: #1d6635;
+}
+
+.falha {
+    background: #fde4e4;
+    color: #8b2525;
+}
+
+.tabela-rolagem {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-bottom: 1px solid #edf0f5;
+    padding: 12px;
+    text-align: left;
+}
+
+.destaque {
+    font-weight: 700;
+}
+
+.acoes {
+    gap: 12px;
+}
+
+.acoes form {
+    margin: 0;
+}
+
+.link {
+    border: 0;
+    background: transparent;
+    color: #275df5;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.perigo {
+    color: #b42318;
+}
+
+.vazio {
+    padding: 20px;
+    text-align: center;
+}
+
+.painel-form {
+    padding: 24px;
+}
+
+.campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.campos label {
+    display: grid;
+    gap: 8px;
+    font-weight: 700;
+}
+
+.campos input {
+    width: 100%;
+    border: 1px solid #ccd5e3;
+    border-radius: 8px;
+    padding: 11px;
+}
+
+.botoes {
+    margin-top: 24px;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+@media (max-width: 700px) {
+    .cabecalho,
+    .barra {
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .campos {
+        grid-template-columns: 1fr;
+    }
+}

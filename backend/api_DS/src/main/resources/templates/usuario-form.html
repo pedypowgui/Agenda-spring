@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Usuários</title>
+    <link rel="stylesheet" th:href="@{/css/usuarios.css}" href="/css/usuarios.css">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+            <h1 th:text="${edicao} ? 'Editar usuário' : 'Cadastrar usuário'">Cadastrar usuário</h1>
+        </div>
+        <a class="botao secundario" th:href="@{/usuarios}" href="/usuarios">Voltar</a>
+    </header>
+
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel painel-form">
+        <form method="post" th:object="${usuario}"
+              th:action="${edicao} ? @{/usuarios/atualizar/{id}(id=${usuario.clienteId})} : @{/usuarios/salvar}">
+            <div class="campos">
+                <label for="nome">Nome completo <span>*</span>
+                    <input id="nome" type="text" th:field="*{clienteNome}"
+                           required maxlength="150" autocomplete="name">
+                </label>
+
+                <label for="email">E-mail <span>*</span>
+                    <input id="email" type="email" th:field="*{clienteEmail}"
+                           required maxlength="200" autocomplete="email">
+                </label>
+
+                <label for="telefone">Telefone <span>*</span>
+                    <input id="telefone" type="tel" th:field="*{clienteTelefone}"
+                           required maxlength="30" autocomplete="tel">
+                </label>
+
+                <label for="cpf">CPF <span>*</span>
+                    <input id="cpf" type="text" th:field="*{clienteCpf}"
+                           required maxlength="20" autocomplete="off">
+                </label>
+            </div>
+
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/usuarios}" href="/usuarios">Cancelar</a>
+                <button class="botao principal" type="submit">Salvar usuário</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

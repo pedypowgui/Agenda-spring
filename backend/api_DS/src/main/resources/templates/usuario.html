@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Usuários</title>
+    <link rel="stylesheet" th:href="@{/css/usuarios.css}" href="/css/usuarios.css">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+            <h1>Cadastro de usuários</h1>
+        </div>
+        <a class="botao principal btn-extra" th:href="@{/usuarios/novo}" href="/usuarios/novo">
+            + Novo usuário
+        </a>
+    </header>
+
+    <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel">
+        <div class="barra">
+            <div>
+                <h2>Usuários cadastrados</h2>
+                <p><span th:text="${#lists.size(usuarios)}">0</span> registro(s)</p>
+            </div>
+        </div>
+
+        <div class="tabela-rolagem">
+            <table aria-label="Usuários cadastrados">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>CPF</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.clienteId}">1</td>
+                    <td class="destaque" th:text="${usuario.clienteNome}">Nome</td>
+                    <td th:text="${usuario.clienteEmail}">email@exemplo.com</td>
+                    <td th:text="${usuario.clienteTelefone}">Telefone</td>
+                    <td th:text="${usuario.clienteCpf}">CPF</td>
+                    <td class="acoes">
+                        <a class="link" th:href="@{/usuarios/editar/{id}(id=${usuario.clienteId})}">Editar</a>
+                        <form method="post" th:action="@{/usuarios/excluir/{id}(id=${usuario.clienteId})}"
+                              onsubmit="return confirm('Excluir este usuário?');">
+                            <button class="link perigo" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="vazio mensagem-sem-registros" th:if="${#lists.isEmpty(usuarios)}">
+                Nenhum usuário encontrado.
+            </p>
+        </div>
+    </section>
+</main>
+</body>
+</html>
