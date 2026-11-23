@@ -18,6 +18,12 @@ body {
     margin: 32px auto;
 }
 
+.navegacao {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}
+
 .cabecalho,
 .barra,
 .botoes,
@@ -138,6 +144,11 @@ td {
     text-align: center;
 }
 
+.nota {
+    margin-top: 18px;
+    color: #52617a;
+}
+
 .painel-form {
     padding: 24px;
 }
@@ -154,11 +165,14 @@ td {
     font-weight: 700;
 }
 
-.campos input {
+.campos input,
+.campos select {
     width: 100%;
     border: 1px solid #ccd5e3;
     border-radius: 8px;
     padding: 11px;
+    background: white;
+    color: inherit;
 }
 
 .botoes {

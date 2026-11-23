@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agenda de atendimentos</title>
+    <link rel="stylesheet" th:href="@{/css/clientes.css}" href="/css/clientes.css">
+</head>
+
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+            <h1>Agenda de atendimentos</h1>
+        </div>
+        <a class="botao principal btn-extra" th:href="@{/agendamentos/novo}" href="/agendamentos/novo">
+            + Novo agendamento
+        </a>
+    </header>
+
+    <nav class="navegacao" aria-label="Cadastros">
+        <a class="link" th:href="@{/clientes}" href="/clientes">Clientes</a>
+        <a class="link" th:href="@{/profissionais}" href="/profissionais">Profissionais</a>
+    </nav>
+
+    <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel">
+        <div class="barra">
+            <div>
+                <h2>Agendamentos cadastrados</h2>
+                <p><span th:text="${#lists.size(agendamentos)}">0</span> registro(s)</p>
+            </div>
+        </div>
+
+        <div class="tabela-rolagem">
+            <table aria-label="Agendamentos cadastrados">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Profissional</th>
+                    <th>Data</th>
+                    <th>Horário</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="agendamento : ${agendamentos}">
+                    <td th:text="${agendamento.agendamentoId}">1</td>
+                    <td class="destaque"
+                        th:text="${clienteNomes[agendamento.clienteId] ?: 'Cliente não encontrado'}">Cliente</td>
+                    <td th:text="${profissionalNomes[agendamento.profissionalId] ?: 'Profissional não encontrado'}">
+                        Profissional
+                    </td>
+                    <td th:text="${#temporals.format(agendamento.agendamentoData, 'dd/MM/yyyy')}">01/01/2026</td>
+                    <td th:text="${#temporals.format(agendamento.agendamentoHorario, 'HH:mm')}">09:00</td>
+                    <td class="acoes">
+                        <form method="post"
+                              th:action="@{/agendamentos/excluir/{id}(id=${agendamento.agendamentoId})}"
+                              onsubmit="return confirm('Excluir este agendamento?');">
+                            <button class="link perigo" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="vazio mensagem-sem-registros" th:if="${#lists.isEmpty(agendamentos)}">
+                Nenhum agendamento encontrado.
+            </p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

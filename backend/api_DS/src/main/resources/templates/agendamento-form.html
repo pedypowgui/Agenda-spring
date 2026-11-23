@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Novo agendamento</title>
+    <link rel="stylesheet" th:href="@{/css/clientes.css}" href="/css/clientes.css">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">SPRING BOOT + THYMELEAF</p>
+            <h1>Novo agendamento</h1>
+        </div>
+        <a class="botao secundario" th:href="@{/}" href="/">Voltar à agenda</a>
+    </header>
+
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel painel-form">
+        <form method="post" th:object="${agendamento}" th:action="@{/agendamentos}">
+            <div class="campos">
+                <label for="clienteId">Cliente*
+                    <select id="clienteId" th:field="*{clienteId}" required>
+                        <option value="">Selecione um cliente</option>
+                        <option th:each="cliente : ${clientes}"
+                                th:value="${cliente.clienteId}"
+                                th:text="${cliente.clienteNome + ' - ' + cliente.clienteEmail}"></option>
+                    </select>
+                </label>
+
+                <label for="profissionalId">Profissional*
+                    <select id="profissionalId" th:field="*{profissionalId}" required>
+                        <option value="">Selecione um profissional</option>
+                        <option th:each="profissional : ${profissionais}"
+                                th:value="${profissional.profissionalId}"
+                                th:text="${profissional.profissionalNome + ' - ' + profissional.profissionalEspecialidade}">
+                        </option>
+                    </select>
+                </label>
+
+                <label for="agendamentoData">Data*
+                    <input id="agendamentoData" type="date" th:field="*{agendamentoData}" required>
+                </label>
+
+                <label for="agendamentoHorario">Horário*
+                    <input id="agendamentoHorario" type="time" th:field="*{agendamentoHorario}" required>
+                </label>
+            </div>
+
+            <p class="nota" th:if="${#lists.isEmpty(clientes) or #lists.isEmpty(profissionais)}">
+                Cadastre pelo menos um cliente e um profissional antes de criar um agendamento.
+            </p>
+
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/}" href="/">Cancelar</a>
+                <button class="botao principal" type="submit"
+                        th:disabled="${#lists.isEmpty(clientes) or #lists.isEmpty(profissionais)}">
+                    Salvar agendamento
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>
