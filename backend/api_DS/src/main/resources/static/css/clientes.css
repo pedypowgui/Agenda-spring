@@ -1,6 +1,6 @@
 :root {
     color-scheme: light;
-    font-family: Arial, sans-serif;
+    font-family: Inter, sans-serif;
 }
 
 * {
@@ -93,6 +93,7 @@ body {
 
 .tabela-rolagem {
     overflow-x: auto;
+    padding: 18px;
 }
 
 table {
@@ -112,7 +113,8 @@ td {
 }
 
 .acoes {
-    gap: 12px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .acoes form {
